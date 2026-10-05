@@ -184,76 +184,72 @@ function App() {
             )}
           </div>
 
-          {/* 2 KORTELĖ: DIENOS PROGRESAS */}
+          {/* 2 KORTELĖ: DIENOS UŽDUOTYS */}
+          <div className="tasks-card">
+            <h2 className="tasks-title">Dienos užduotys</h2>
+
+            <div className="tasks-categories">
+              <div className="task-category">
+                <h3>Atlikta ({completedTasks.length})</h3>
+                <ul className="task-list">
+                  {completedTasks.length === 0 ? (
+                    <li className="empty-task-msg">Nėra atliktų užduočių</li>
+                  ) : (
+                    completedTasks.map((task) => (
+                      <li key={task.id} className="task-item completed">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={task.completed}
+                            onChange={() => toggleTask(task.id)}
+                          />
+                          <span className="task-icon" aria-hidden="true">{getTaskCategory(task).icon}</span>
+                          <span className="task-title-text">{task.title}</span>
+                          <span className="task-category-label">{getTaskCategory(task).name}</span>
+                        </label>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
+
+              <div className="task-category">
+                <h3>Neatlikta ({pendingTasks.length})</h3>
+                <ul className="task-list">
+                  {pendingTasks.length === 0 ? (
+                    <li className="empty-task-msg">Visos užduotys atliktos! 🎉</li>
+                  ) : (
+                    pendingTasks.map((task) => (
+                      <li key={task.id} className="task-item">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={task.completed}
+                            onChange={() => toggleTask(task.id)}
+                          />
+                          <span className="task-icon" aria-hidden="true">{getTaskCategory(task).icon}</span>
+                          <span className="task-title-text">{task.title}</span>
+                          <span className="task-category-label">{getTaskCategory(task).name}</span>
+                        </label>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* 3 KORTELĖ: DIENOS PROGRESAS */}
           <div className="tasks-card progress-card">
             <DienosProgresas tasks={tasks} />
           </div>
 
-          {/* 3 KORTELĖ: PRIDĖTI NAUJĄ UŽDUOTĮ */}
+          {/* 4 KORTELĖ: PRIDĖTI NAUJĄ UŽDUOTĮ */}
           <NaujaUzduotis onAddTask={handleAddTask} />
         </div>
       </section>
 
       <div className="ticks"></div>
-
-      {/* 4 KORTELĖ: DIENOS UŽDUOTYS */}
-      <section id="next-steps">
-        <div className="tasks-card">
-          <h2 className="tasks-title">Dienos užduotys</h2>
-
-          <div className="tasks-categories">
-            {/* Kairėje pusėje: Atlikta */}
-            <div className="task-category">
-              <h3>Atlikta ({completedTasks.length})</h3>
-              <ul className="task-list">
-                {completedTasks.length === 0 ? (
-                  <li className="empty-task-msg">Nėra atliktų užduočių</li>
-                ) : (
-                  completedTasks.map((task) => (
-                    <li key={task.id} className="task-item completed">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={task.completed}
-                          onChange={() => toggleTask(task.id)}
-                        />
-                        <span className="task-icon" aria-hidden="true">{getTaskCategory(task).icon}</span>
-                        <span className="task-title-text">{task.title}</span>
-                        <span className="task-category-label">{getTaskCategory(task).name}</span>
-                      </label>
-                    </li>
-                  ))
-                )}
-              </ul>
-            </div>
-
-            {/* Dešinėje pusėje: Neatlikta */}
-            <div className="task-category">
-              <h3>Neatlikta ({pendingTasks.length})</h3>
-              <ul className="task-list">
-                {pendingTasks.length === 0 ? (
-                  <li className="empty-task-msg">Visos užduotys atliktos! 🎉</li>
-                ) : (
-                  pendingTasks.map((task) => (
-                    <li key={task.id} className="task-item">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={task.completed}
-                          onChange={() => toggleTask(task.id)}
-                        />
-                        <span className="task-icon" aria-hidden="true">{getTaskCategory(task).icon}</span>
-                        <span className="task-title-text">{task.title}</span>
-                        <span className="task-category-label">{getTaskCategory(task).name}</span>
-                      </label>
-                    </li>
-                  ))
-                )}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <div className="ticks"></div>
       <section id="spacer"></section>
