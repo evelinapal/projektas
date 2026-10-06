@@ -224,7 +224,7 @@ function App() {
                 </ul>
               </div>
 
-              <div className="task-category">
+              <div className="task-category pending-task-category">
                 <h3>Neatlikta ({pendingTasks.length})</h3>
                 <ul className="task-list">
                   {pendingTasks.length === 0 ? (
