@@ -26,6 +26,9 @@ function DienosProgresas({ tasks = [] }) {
         <p className="progress-text">
           Atlikta <strong>{completedCount}</strong> iš <strong>{totalTasks}</strong> užduočių
         </p>
+        {totalTasks > 0 && completedCount === totalTasks ? (
+          <p className="progress-complete-message">🎉 Šiandien viskas atlikta!</p>
+        ) : null}
       </div>
     )
   }
