@@ -45,6 +45,11 @@ function App() {
   const [petName, setPetName] = useState(readStoredPetName)
   const [error, setError] = useState('')
   const [tasks, setTasks] = useState(readStoredTasks)
+  const today = new Intl.DateTimeFormat('lt-LT', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date())
 
   useEffect(() => {
     try {
@@ -144,6 +149,12 @@ function App() {
         </div>
         <div>
           <h1>Augintinio dienoraštis</h1>
+          <div className="daily-greeting">
+            <p className="daily-greeting-name">
+              {petName || 'Įrašykite augintinio vardą'}
+            </p>
+            <p className="daily-greeting-date">{today}</p>
+          </div>
 
           {/* 1 KORTELĖ: AUGINTINIO VARDAS */}
           <div className="tasks-card pet-card">
