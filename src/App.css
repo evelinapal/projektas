@@ -281,9 +281,15 @@
 
 .task-item label {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 10px;
   cursor: pointer;
+}
+
+.task-item input[type='checkbox'] {
+  flex: 0 0 auto;
+  margin: 0;
 }
 
 .task-icon {
@@ -296,12 +302,28 @@
 .task-title-text {
   flex: 1;
   min-width: 0;
-  overflow-wrap: anywhere;
+  text-align: left;
+  overflow-wrap: break-word;
+  line-height: 1.35;
 }
 
 .task-item.completed .task-title-text {
   color: rgba(255, 255, 255, 0.58);
   text-decoration: line-through;
+}
+
+@media (max-width: 480px) {
+  .task-item {
+    padding: 10px;
+  }
+
+  .task-item label {
+    gap: 8px;
+  }
+
+  .task-icon {
+    flex-basis: 22px;
+  }
 }
 .pet-card {
   margin-bottom: 24px;
