@@ -160,6 +160,7 @@ function App() {
           <div className="tasks-card pet-card">
             {petName ? (
               <div className="pet-info-box">
+                <DienosProgresas tasks={tasks} />
                 <h2 className="tasks-title">Augintinio vardas</h2>
                 <p className="pet-name-display">{petName}</p>
                 <button onClick={handleResetName} className="change-name-btn">
@@ -251,10 +252,6 @@ function App() {
           </div>
 
           {/* 3 KORTELĖ: DIENOS PROGRESAS */}
-          <div className="tasks-card progress-card">
-            <DienosProgresas tasks={tasks} />
-          </div>
-
           {/* 4 KORTELĖ: PRIDĖTI NAUJĄ UŽDUOTĮ */}
           <NaujaUzduotis onAddTask={handleAddTask} />
         </div>
