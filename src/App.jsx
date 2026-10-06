@@ -6,6 +6,9 @@ import './App.css'
 
 const PET_NAME_KEY = 'petName'
 const TASKS_KEY = 'petTasks'
+const PETS_KEY = 'pets'
+const ACTIVE_PET_ID_KEY = 'activePetId'
+const TASKS_BY_PET_KEY = 'tasksByPet'
 
 const TASK_CATEGORIES = {
   maitinimas: { name: 'Maitinimas', icon: '🍽️' },
@@ -31,12 +34,35 @@ function readStoredPetName() {
   }
 }
 
-function readStoredTasks() {
+function readStoredPets() {
   try {
-    const saved = localStorage.getItem(TASKS_KEY)
-    return saved ? JSON.parse(saved) : INITIAL_TASKS
+    const savedPets = localStorage.getItem(PETS_KEY)
+    if (savedPets) return JSON.parse(savedPets)
+
+    const savedPetName = readStoredPetName()
+    return [{ id: '1', name: savedPetName || 'Flokis' }]
   } catch {
-    return INITIAL_TASKS
+    return [{ id: '1', name: readStoredPetName() || 'Flokis' }]
+  }
+}
+
+function readStoredActivePetId() {
+  try {
+    return localStorage.getItem(ACTIVE_PET_ID_KEY) || '1'
+  } catch {
+    return '1'
+  }
+}
+
+function readStoredTasksByPet() {
+  try {
+    const savedTasksByPet = localStorage.getItem(TASKS_BY_PET_KEY)
+    if (savedTasksByPet) return JSON.parse(savedTasksByPet)
+
+    const savedTasks = localStorage.getItem(TASKS_KEY)
+    return { '1': savedTasks ? JSON.parse(savedTasks) : INITIAL_TASKS }
+  } catch {
+    return { '1': INITIAL_TASKS }
   }
 }
 
@@ -44,7 +70,10 @@ function App() {
   const [draft, setDraft] = useState(readStoredPetName)
   const [petName, setPetName] = useState(readStoredPetName)
   const [error, setError] = useState('')
-  const [tasks, setTasks] = useState(readStoredTasks)
+  const [pets, setPets] = useState(readStoredPets)
+  const [activePetId, setActivePetId] = useState(readStoredActivePetId)
+  const [tasksByPet, setTasksByPet] = useState(readStoredTasksByPet)
+  const tasks = tasksByPet[activePetId] ?? []
   const today = new Intl.DateTimeFormat('lt-LT', {
     year: 'numeric',
     month: 'long',
@@ -53,11 +82,28 @@ function App() {
 
   useEffect(() => {
     try {
+      localStorage.setItem(PETS_KEY, JSON.stringify(pets))
+    } catch {
+      // Ignoruojama klaida
+    }
+  }, [pets])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(ACTIVE_PET_ID_KEY, activePetId)
+    } catch {
+      // Ignoruojama klaida
+    }
+  }, [activePetId])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(TASKS_BY_PET_KEY, JSON.stringify(tasksByPet))
       localStorage.setItem(TASKS_KEY, JSON.stringify(tasks))
     } catch {
       // Ignoruojama klaida
     }
-  }, [tasks])
+  }, [tasksByPet, tasks])
 
   function handleSaveName(event) {
     event.preventDefault()
@@ -69,6 +115,15 @@ function App() {
     }
 
     setPetName(name)
+    setPets((prevPets) => {
+      const firstPet = prevPets.find((pet) => pet.id === '1')
+      if (!firstPet) return [{ id: '1', name }, ...prevPets]
+
+      return prevPets.map((pet) =>
+        pet.id === '1' ? { ...pet, name } : pet
+      )
+    })
+    setActivePetId('1')
     setError('')
     try {
       localStorage.setItem(PET_NAME_KEY, name)
@@ -88,11 +143,12 @@ function App() {
   }
 
   function toggleTask(id) {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
+    setTasksByPet((prevTasksByPet) => ({
+      ...prevTasksByPet,
+      [activePetId]: (prevTasksByPet[activePetId] ?? []).map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    )
+      ),
+    }))
   }
 
   // Funkcija naujai užduočiai pridėti
@@ -103,7 +159,10 @@ function App() {
       category,
       completed: false,
     }
-    setTasks((prevTasks) => [...prevTasks, newTask])
+    setTasksByPet((prevTasksByPet) => ({
+      ...prevTasksByPet,
+      [activePetId]: [...(prevTasksByPet[activePetId] ?? []), newTask],
+    }))
   }
 
   const completedTasks = tasks.filter((t) => t.completed)
