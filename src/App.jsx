@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import puppyLogo from './assets/puppy-logo.png'
 import DienosProgresas from './DienosProgresas'
+import AugintiniuNavigacija from './AugintiniuNavigacija'
 import NaujaUzduotis from './NaujaUzduotis'
 import './App.css'
 
@@ -73,7 +74,8 @@ function App() {
   const [pets, setPets] = useState(readStoredPets)
   const [activePetId, setActivePetId] = useState(readStoredActivePetId)
   const [tasksByPet, setTasksByPet] = useState(readStoredTasksByPet)
-  const tasks = tasksByPet[activePetId] ?? []
+  const tasks = tasksByPet[activePetId] || []
+  const activePet = pets.find((pet) => pet.id === activePetId)
   const today = new Intl.DateTimeFormat('lt-LT', {
     year: 'numeric',
     month: 'long',
@@ -142,6 +144,23 @@ function App() {
     }
   }
 
+  function handleAddPet(name) {
+    const trimmedName = name.trim()
+    if (!trimmedName) return
+
+    let id = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`
+    while (pets.some((pet) => pet.id === id)) {
+      id = `${Date.now()}-${Math.random().toString(36).slice(2)}`
+    }
+
+    setPets((prevPets) => [...prevPets, { id, name: trimmedName }])
+    setTasksByPet((prevTasksByPet) => ({
+      ...prevTasksByPet,
+      [id]: INITIAL_TASKS.map((task) => ({ ...task })),
+    }))
+    setActivePetId(id)
+  }
+
   function toggleTask(id) {
     setTasksByPet((prevTasksByPet) => ({
       ...prevTasksByPet,
@@ -196,6 +215,12 @@ function App() {
 
   return (
     <>
+      <AugintiniuNavigacija
+        pets={pets}
+        activePetId={activePetId}
+        onSelectPet={setActivePetId}
+        onAddPet={handleAddPet}
+      />
       <section id="center">
         <div className="hero">
           <img
@@ -210,7 +235,7 @@ function App() {
           <h1>Augintinio dienoraštis</h1>
           <div className="daily-greeting">
             <p className="daily-greeting-name">
-              {petName || 'Įrašykite augintinio vardą'}
+              {activePet?.name || 'Įrašykite augintinio vardą'}
             </p>
             <p className="daily-greeting-date">{today}</p>
           </div>
