@@ -395,6 +395,67 @@
   color: var(--text);
   font-size: 0.95rem;
 }
+
+.pet-navigation {
+  display: flex;
+  width: min(100%, 760px);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto 24px;
+}
+
+.pet-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pet-tab,
+.pet-add-form button {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.15));
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-h, #fff);
+  font: inherit;
+  cursor: pointer;
+}
+
+.pet-tab--active,
+.pet-add-form button {
+  border-color: #4facfe;
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  color: #fff;
+}
+
+.pet-add-form {
+  display: flex;
+  flex: 1 1 260px;
+  max-width: 380px;
+  gap: 8px;
+}
+
+.pet-add-form input {
+  min-width: 0;
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.15));
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-h, #fff);
+  font: inherit;
+}
+
+.pet-tab:focus-visible,
+.pet-add-form input:focus-visible,
+.pet-add-form button:focus-visible {
+  outline: 2px solid #4facfe;
+  outline-offset: 2px;
+}
 /* ==========================================
    VIENODAS KORTELIŲ IR ŠRIFTŲ DIZAINAS
    ========================================== */
