@@ -396,6 +396,7 @@
   font-size: 0.95rem;
 }
 
+.pet-nav,
 .pet-navigation {
   display: flex;
   width: min(100%, 760px);
@@ -404,6 +405,12 @@
   justify-content: center;
   gap: 12px;
   margin: 0 auto 24px;
+  padding: 16px;
+  box-sizing: border-box;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 16px;
+  background: var(--card-bg, #1a1a24);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .pet-tabs {
@@ -427,8 +434,8 @@
 
 .pet-tab--active,
 .pet-add-form button {
-  border-color: #4facfe;
-  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  border-color: #00f2fe;
+  background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
   color: #fff;
 }
 
@@ -455,6 +462,23 @@
 .pet-add-form button:focus-visible {
   outline: 2px solid #4facfe;
   outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .pet-nav,
+  .pet-navigation {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .pet-tabs,
+  .pet-add-form {
+    width: 100%;
+  }
+
+  .pet-add-form {
+    flex-basis: 100%;
+  }
 }
 /* ==========================================
    VIENODAS KORTELIŲ IR ŠRIFTŲ DIZAINAS
